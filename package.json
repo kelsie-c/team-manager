@@ -1,0 +1,27 @@
+{
+  "name": "team-manager",
+  "version": "1.0.0",
+  "description": "Week 10 Homework",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "jest": "^26.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelsie-c/team-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kelsie-c/team-manager/issues"
+  },
+  "homepage": "https://github.com/kelsie-c/team-manager#readme"
+}
