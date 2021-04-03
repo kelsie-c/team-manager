@@ -1,25 +1,35 @@
 const inquirer = require('inquirer');
+const fs = require('fs');
 
 let nameOfTeam = '';
 
+// initialize app by creating the baseline HTML and starting the command line questions
+function initialize() {
+    createHTML();
+    createTeam();
+}
+
+// command line questions
 function createTeam() {
     inquirer.prompt([
+        // boolean input type to determine if user wants to create a team
         {
             type: 'confirm',
             message: 'Would you like to create a new team?',
             name: 'makeTeam',
         },        
     ])
+    // if no, stop app. otherwise, proceed to next question
     .then( function({makeTeam}) {
         if (!makeTeam) {
             return;
-        } else {
-            nameTeam();
-        }              
+        }
+        nameTeam();            
     })
 }
 
 function nameTeam() {
+    // create a team name
     inquirer.prompt([
         {
             type: 'input',
@@ -27,6 +37,7 @@ function nameTeam() {
             name: 'teamName',
         },
     ])
+    // send user a brief message and proceed to next question
     .then( function({teamName}) {
         nameOfTeam = teamName; 
         console.log(`Let's create your team ${nameOfTeam}!`);
@@ -35,6 +46,7 @@ function nameTeam() {
 }
 
 function selectTeamMembers() {
+    // add team members by having user choose from a list and add one at a time
     inquirer.prompt([
         {
             type: 'list',
@@ -44,6 +56,7 @@ function selectTeamMembers() {
         },
         
     ])
+    // send selected team member to function to gather more info about that member
     .then( function({teamChoice}) {
         let myTeamMember = teamChoice;
         teamMemberDetails(myTeamMember);
@@ -51,6 +64,7 @@ function selectTeamMembers() {
 }
 
 function teamMemberDetails(teamChoice) {
+    // gather all info for the Employee class
     inquirer.prompt([
         {
             type: 'input',
@@ -68,6 +82,7 @@ function teamMemberDetails(teamChoice) {
             name: 'employeeEmail',
         },
     ])
+    // then ask one additional question based on team member's role
     .then( function() {
         console.log(teamChoice);
         if(teamChoice == 'Manager') {
@@ -81,6 +96,7 @@ function teamMemberDetails(teamChoice) {
 }
 
 function managerDetails(teamChoice) {
+    // if team member is a manager
     inquirer.prompt([
         {
             type: 'input',
@@ -88,12 +104,14 @@ function managerDetails(teamChoice) {
             name: 'officeNumber',
         },
     ])
+    // then ask if user wants to add another team member
     .then( function() {
         addToTeam();
     })
 }
 
 function engineerDetails(teamChoice) {
+    // if team member is an engineer
     inquirer.prompt([
         {
             type: 'input',
@@ -101,12 +119,14 @@ function engineerDetails(teamChoice) {
             name: 'gitHubUser',
         },
     ])
+    // then ask if user wants to add another team member
     .then( function() {
         addToTeam();
     })
 }
 
 function internDetails(teamChoice) {
+    // if team member is an intern
     inquirer.prompt([
         {
             type: 'input',
@@ -114,12 +134,14 @@ function internDetails(teamChoice) {
             name: 'internSchool',
         },
     ])
+    // then ask if user wants to add another team member
     .then( function() {
         addToTeam();
     })
 }
 
 function addToTeam() {
+    // ask if user wants to add another team member
     inquirer.prompt([
         {
             type: 'confirm',
@@ -127,6 +149,7 @@ function addToTeam() {
             name: 'addAnother',
         }
     ])
+    // if yes, return to function to select a team member. otherwise, ask user if they have finished building their team
     .then(function({addAnother}) {
         if (addAnother) {
             selectTeamMembers();
@@ -137,6 +160,7 @@ function addToTeam() {
 }
 
 function finalizeTeam() {
+    // ask user if they have finished building their team
     inquirer.prompt([
         {
             input: 'confirm',
@@ -144,6 +168,7 @@ function finalizeTeam() {
             name: 'teamComplete'
         }
     ])
+    // if yes, send a message to the user and ask if they want to create another team
     .then(function({teamComplete}) {
         if (teamComplete) {
             console.log(`Your team is now complete!`);
@@ -154,6 +179,7 @@ function finalizeTeam() {
 }
 
 function makeAnotherTeam() {
+    // ask if they want to create another team
     inquirer.prompt([
         {
             type: 'confirm',
@@ -161,6 +187,7 @@ function makeAnotherTeam() {
             name: 'makeTeam',
         },        
     ])
+    // if no, stop application. otherwise, return to name team function
     .then( function({makeTeam}) {
         if (!makeTeam) {
             return;
@@ -170,4 +197,27 @@ function makeAnotherTeam() {
     })
 }
 
-createTeam();
+function createHTML() {
+    // create the base HTML to append later
+    const baseHTML = `<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Manager</title>
+</head>
+<body>
+
+</body>
+</html>`
+
+    fs.writeFile("./dist/team-manager.html", html, function(err) {
+        if(err) {
+            console.log(err);
+        }
+    });
+}
+
+// start when user enters "node index.js" from the command line
+initialize();
