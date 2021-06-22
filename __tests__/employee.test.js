@@ -25,10 +25,9 @@ describe("Employee", () => {
     })
 
     // check that it returns the correct role
-    it("checks that the proper role is returned", () => {
-        const roleEl = "Employee";
-        const employeeEl = new Employee("x", "y", "z");
-        expect(employeeEl.role).toBe(roleEl);
+    it("creates a new employee object", () => {
+        const roleEl = new Employee;
+        expect(typeof(roleEl)).toBe("object");
     })
 })
 
